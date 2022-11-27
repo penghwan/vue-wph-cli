@@ -1,0 +1,26 @@
+{
+  "name": "vue-wph-cli",
+  "version": "1.0.1",
+  "description": "自定义vue-cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "wph-cli": "./bin/www.js"
+  },
+  "keywords": ["自定义vue-cli", "wph-cli -V", "wph-cli --help", "wph-cli-create <project-name>"],
+  "author": "penghwan",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.2.0",
+    "commander": "^9.4.1",
+    "consolidate": "^0.16.0",
+    "download-git-repo": "^3.0.2",
+    "ejs": "^3.1.8",
+    "inquirer": "^7.0.0",
+    "metalsmith": "^2.5.1",
+    "ncp": "^2.0.0",
+    "ora": "^4.0.3"
+  }
+}
