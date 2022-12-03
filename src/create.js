@@ -1,13 +1,22 @@
 const path = require('path')
-const fs = require('fs')
-const ora = require('ora') // 命令行加载效果
-const inquirer = require('inquirer') // 交互式命令行工具
+// fs是node下的文件操作，existsSync——检测路径是否存在
+const exists = require('fs').existsSync
+// 命令行加载效果
+const ora = require('ora')
+// 交互式命令行工具
+const inquirer = require('inquirer')
 const axios = require('axios')
-const { promisify } = require('util') // 包装promise方法
-let downloadGitRepo = require('download-git-repo') // 在git中下载模板
-let ncp = require('ncp') // 实现文件的拷贝功能
-const Metalsmith = require('metalsmith') // 静态网页生成器
-let { render } = require('consolidate').ejs // 模板引擎里解析渲染器
+// 包装promise方法
+const { promisify } = require('util')
+// 静态网页生成器
+const Metalsmith = require('metalsmith')
+// 从git中下载模板
+let downloadGitRepo = require('download-git-repo')
+// 实现文件的拷贝功能
+let ncp = require('ncp')
+// 模板引擎里解析渲染器
+let { render } = require('consolidate').ejs
+// 加载常量文件
 const { downloadDirectory } = require('./constants')
 
 // 将方法转化为promise方法
@@ -41,9 +50,9 @@ const fetchTagList = async(repo) => {
 const downloadTemplate = async(template, tag) => {
   let api = `td-cli/${template}`
   if (tag) {
-    api += `#${tag}`
+    api += `#${tag}` // td-cli/vue-template#4.0
   }
-  const dest = `${downloadDirectory}/${template}`
+  const dest = `${downloadDirectory}/${template}` // C:\Users\penghwan/.template/vue-template
   await downloadGitRepo(api, dest)
   return dest
 }
@@ -75,15 +84,16 @@ module.exports = async (projectName) => {
   const dest = await waitFnLoading(downloadTemplate, 'downloading template...')(
     template,
     tag
-  )
-  if (!fs.existsSync(path.join(dest, 'ask.js'))) {
+  ) // dest ===> C:\Users\penghwan/.template/vue-template
+
+  if (!exists(path.join(dest, 'ask.js'))) {
     // 不存在，即为简单模板
-    await ncp(dest, path.resolve(projectName))
+    await ncp(dest, path.resolve(projectName)) // path.resolve('vue-demo') ===> D:\code\vue\vue-wph-cli\vue-demo
   } else {
     // 复杂模板
     // 需要用户选择，选择后编译模板
     await new Promise((resolve, reject) => {
-      Metalsmith(__dirname) // 如果传入路径，它就会默认遍历当前src下文件
+      Metalsmith(__dirname) // 如果传入路径，它就会默认遍历当前src下文件，__dirname ===> D:\code\vue\vue-wph-cli\src
         .source(dest) // 遍历模板文件
         .destination(path.resolve(projectName)) // 编译后去的地方
         .use(async (files, metalsmith, done) => {

@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+
+program
+  .usage('<template-name> [project-name]') // 通过这个选项可以修改帮助信息的首行提示，Usage: <template-name> [project-name]
+  .option('-c, --clone', 'use git clone')
+  .option('--offline', 'use cached template')
+  
+require('../src/main.js')

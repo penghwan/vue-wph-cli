@@ -1,6 +1,7 @@
-// 获取版本号
+// 命令行处理工具
 const program = require('commander')
 const path = require('path')
+// 获取版本号
 const { version } = require('./constants')
 
 // 配置3个指令
@@ -22,6 +23,8 @@ const mapActions = {
   }
 }
 // 循环创建命令
+// Reflect.ownKeys()：用于返回对象的所有属性，基本等同于Object.getOwnPropertyNames与Object.getOwnPropertySymbols之和
+// Reflect.ownKeys(mapActions) => ['create', 'config', '*']
 Reflect.ownKeys(mapActions).forEach(action => {
   program
     .command(action) // 配置命名的名称
@@ -32,13 +35,14 @@ Reflect.ownKeys(mapActions).forEach(action => {
         // 访问不到对应的命令
         console.log(mapActions[action].description)
       } else {
-        // console.log(action)
-        // 截取命令
-        // wph-cli create <project-name>
+        // 输入命令：wph-cli create <project-name>
+        // path.resolve(__dirname, action)：加载create.js文件
+        // process.argv.slice(3): <project-name>
         require(path.resolve(__dirname, action))(...process.argv.slice(3))
       }
     })
 })
+
 // 监听用户的help事件
 program.on('--help', () => {
   console.log('\nExamples:')
@@ -48,4 +52,6 @@ program.on('--help', () => {
     })
   })
 })
+
+// program.version()：可以设置版本，其默认选项为-V和--version，设置了版本后，命令行会输出当前的版本号
 program.version(version).parse(process.argv)

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "wph-cli": "./bin/www.js"
+    "wph-cli": "bin/create"
   },
   "keywords": ["自定义vue-cli", "wph-cli -V", "wph-cli --help", "wph-cli-create <project-name>"],
   "author": "penghwan",
